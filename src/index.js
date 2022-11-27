@@ -90,26 +90,13 @@ app.put(
   checksExistsUserAccount,
   checksExistsTodo,
   (request, response) => {
-    const { user, todo } = request;
+    const { todo } = request;
     const { title, deadline } = request.body;
 
-    const todoUpdated = {
-      ...todo,
-      title,
-      deadline: new Date(deadline),
-    };
+    todo.title = title;
+    todo.deadline = new Date(deadline);
 
-    const todosParsed = user.todos.map((t) => {
-      if (t.id === todo.id) {
-        return todoUpdated;
-      }
-
-      return t;
-    });
-
-    user.todos = todosParsed;
-
-    return response.status(201).send(todoUpdated);
+    return response.status(201).send(todo);
   }
 );
 
@@ -118,24 +105,11 @@ app.patch(
   checksExistsUserAccount,
   checksExistsTodo,
   (request, response) => {
-    const { user, todo } = request;
+    const { todo } = request;
 
-    const todoUpdated = {
-      ...todo,
-      done: true,
-    };
+    todo.done = true;
 
-    const todosParsed = user.todos.map((t) => {
-      if (t.id === todo.id) {
-        return todoUpdated;
-      }
-
-      return t;
-    });
-
-    user.todos = todosParsed;
-
-    return response.status(201).send(todoUpdated);
+    return response.status(201).send(todo);
   }
 );
 
